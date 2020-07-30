@@ -5,13 +5,19 @@ const sharp = require("sharp");
 
 const Product = require("../models/products");
 const upload = require("../middleware/upload");
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
 // get all products
 router.get("/products", async (req, res) => {
-  const products = await Product.find({}).sort("-price");
-  return res.send(products);
+  try {
+    const { page, limit } = req.query;
+    const products = await Product.paginate({ page, limit });
+    return res.send({ products });
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // create a product
@@ -29,16 +35,23 @@ router.post("/products", auth, async (req, res) => {
 router.post(
   "/products/:productId",
   auth,
-  upload("images"),
+  upload.array("images"),
   async (req, res) => {
     try {
-      const buffer = await sharp(req.file.buffer)
-        .resize({ height: 500, width: 500 })
-        .png()
-        .toBuffer();
+      const buffer = [];
+
+      req.files.forEach(async (file) =>
+        buffer.push(
+          await sharp(file.buffer)
+            .resize({ height: 500, width: 500 })
+            .png()
+            .toBuffer()
+        )
+      );
       const product = await Product.findById(productId);
-      product.images.push(buffer);
-      res.send();
+      product.images = buffer;
+      await product.save();
+      res.send({ product });
     } catch (e) {
       res.status(500).send();
     }
