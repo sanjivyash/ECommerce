@@ -60,3 +60,5 @@ router.post(
     res.status(400).send({ error: error.message });
   }
 );
+
+module.exports = router;
