@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+require('dotenv').config();
 
 mongoose
   .connect(process.env.DATABASE_URL, {
@@ -6,5 +7,5 @@ mongoose
     useCreateIndex: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("Databse connection established!"))
+  .then(() => console.log("Database connection established!"))
   .catch(() => console.log("Database connection dumped..."));
