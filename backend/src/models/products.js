@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const paginate = require("mongoose-paginate");
 const validator = require("validator");
 
 // model scheme
@@ -30,6 +31,9 @@ const ProductSchema = new mongoose.Schema({
     },
   ],
 });
+
+// enable pagination
+ProductSchema.plugin(paginate);
 
 // find by Product ID
 ProductSchema.statics.findByID = async function (productId) {
