@@ -7,16 +7,16 @@ function Products() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/products").then((res) => {
-      // console.log(res.data);
-      setData(res.data);
+    axios.get("/products?page=1&limit=3").then((res) => {
+      console.log(res.data);
+      setData(res.data.products.docs);
       setIsLoading(false);
     });
   }, []);
 
   const listProducts = data.map((product) => {
     return (
-      <div className="media">
+      <div className="media" key={product._id}>
         <img
           src="../../public/Gravatar-icon.png"
           alt="placeholder for image"

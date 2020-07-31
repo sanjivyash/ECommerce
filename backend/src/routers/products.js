@@ -23,6 +23,17 @@ router.get("/products", async (req, res) => {
   }
 });
 
+// read a product
+router.get("/products/:productId", async (req, res) => {
+  // console.log(productId);
+  try {
+    const product = await Product.findByProductId(req.params.productId);
+    return res.send({ product });
+  } catch (e) {
+    res.status(400).send(e);
+  }
+});
+
 // create a product
 router.post("/products", auth, async (req, res) => {
   try {
@@ -51,7 +62,7 @@ router.post(
             .toBuffer()
         )
       );
-      const product = await Product.findById(productId);
+      const product = await Product.findByProductId(req.params.productId);
       product.images = buffer;
       await product.save();
       res.send({ product });
@@ -63,5 +74,36 @@ router.post(
     res.status(400).send({ error: error.message });
   }
 );
+
+// edit a product
+router.patch("/products/:productId", auth, async (req, res) => {
+  try {
+    const product = await Product.findByProductId(req.params.productId);
+    const updates = Object.keys(req.form);
+    const fields = ["name", "description", "price"];
+    const isValid = updates.every((update) => fields.includes(update));
+
+    if (isValid) {
+      updates.forEach((update) => (product[update] = req.form[update]));
+      await product.save();
+      res.send(product);
+    } else {
+      throw new Error("Invalid attributes targeted");
+    }
+  } catch (e) {
+    res.status(400).send({ error: e });
+  }
+});
+
+// delete a product
+router.delete("/products/:productId", auth, async (req, res) => {
+  try {
+    const product = await Product.findByProductId(req.params.productId);
+    await product.remove();
+    res.send({ product });
+  } catch (e) {
+    res.status(400).send({ error: e });
+  }
+});
 
 module.exports = router;

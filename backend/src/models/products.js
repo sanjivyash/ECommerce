@@ -36,11 +36,10 @@ const ProductSchema = new mongoose.Schema({
 ProductSchema.plugin(paginate);
 
 // find by Product ID
-ProductSchema.statics.findByID = async function (productId) {
+ProductSchema.statics.findByProductId = async function (productId) {
   const product = await Product.findOne({ productId });
 
   if (product) {
-    console.log(product);
     return product;
   } else {
     console.log(`ProductId: ${productId}`);
@@ -50,8 +49,8 @@ ProductSchema.statics.findByID = async function (productId) {
 
 // logging only the required fields
 ProductSchema.methods.toJSON = function () {
-  const user = this.toObject();
-  return user;
+  const product = this.toObject();
+  return product;
 };
 
 // actual model
