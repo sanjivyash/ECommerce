@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ReactLoading from 'react-loading';
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 function Products() {
  
@@ -19,11 +20,11 @@ function Products() {
     const listProducts = data.map((product) => {
         return (
             <div className="media">
-                <img src="../../public/Gravatar-icon.png" alt="placeholder for image" className="mr-3" />
+                <img src="../../public/Gravatar-icon.png" alt="placeholder for product" className="mr-3" />
                 <div className="media-body">
-                    <h5 className="mt-0">{data.name}</h5>
+                    <h5 className="mt-0">{product.name}</h5>
                     <br />
-                    <h6 className="mt-0">{data.price}</h6>
+                    <h6 className="mt-0">{product.price}</h6>
                     <p>{data.description}</p>
                 </div>
             </div>
