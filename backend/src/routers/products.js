@@ -13,7 +13,10 @@ const router = express.Router();
 router.get("/products", async (req, res) => {
   try {
     const { page, limit } = req.query;
-    const products = await Product.paginate({ page, limit });
+    const products = await Product.paginate(
+      {},
+      { page: Number(page), limit: Number(limit) }
+    );
     return res.send({ products });
   } catch (e) {
     res.status(400).send(e);
