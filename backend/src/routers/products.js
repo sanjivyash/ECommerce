@@ -23,7 +23,7 @@ router.get("/products", async (req, res) => {
 // create a product
 router.post("/products", auth, async (req, res) => {
   try {
-    const product = new Product(req.body);
+    const product = new Product(req.form);
     await product.save();
     return res.status(201).send({ product });
   } catch (e) {
