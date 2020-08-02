@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const express = require("express");
 const multer = require("multer");
 const sharp = require("sharp");
+const fileUpload = require('express-fileupload');
+const _ = require('lodash');
 
 const Product = require("../models/products");
 const upload = require("../middleware/upload");
@@ -48,30 +50,34 @@ router.post("/products", auth, async (req, res) => {
 // images for a product
 router.post(
   "/products/:productId",
-  auth,
-  upload.array("images"),
-  async (req, res) => {
+  fileUpload({ createParentPath: true }),
+  async (req,res) => {
     try {
-      const buffer = [];
-
-      req.files.forEach(async (file) =>
-        buffer.push(
-          await sharp(file.buffer)
-            .resize({ height: 500, width: 500 })
-            .png()
-            .toBuffer()
-        )
-      );
-      const product = await Product.findByProductId(req.params.productId);
-      product.images = buffer;
-      await product.save();
-      res.send({ product });
-    } catch (e) {
-      res.status(500).send();
+      if(!req.files) {
+        res.send({
+          status: false,
+          message: 'No file uploaded'
+        });
+      } else {
+        let data = [];
+        req.files.photos.forEach((file) => {
+          let photo = file;
+          photo.mv('../uploads/' + photo.name);
+          data.push({
+            name: photo.name,
+            mimetype: photo.mimetype,
+            size: photo.size
+          });
+        });
+        res.send({
+          status: true,
+          message: 'Files are uploaded',
+          data: data
+        });
+      }
+    } catch (err) {
+      res.status(500).send(err);
     }
-  },
-  (error, req, res, next) => {
-    res.status(400).send({ error: error.message });
   }
 );
 

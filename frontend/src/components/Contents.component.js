@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Switch, Redirect } from 'react-router-dom';
 import LandingPage from './LandingPage.component.js';
-import Products from './Details.component.js';
+import Products from './Products.component.js';
 import About from './about.component.js';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
