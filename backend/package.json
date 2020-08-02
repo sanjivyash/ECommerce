@@ -5,11 +5,10 @@
   "license": "MIT",
   "scripts": {
     "start": "node src/index",
-    "dev": "env-cmd -f config/dev.env nodemon src/index",
+    "dev": "env-cmd -f config/dev.env nodemon src/index -e js,css,html",
     "test": "env-cmd -f config/test.env jest --watch"
   },
   "dependencies": {
-    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.9",
     "lodash": "^4.17.19",

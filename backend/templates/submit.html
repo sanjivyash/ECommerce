@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
+    <div class="ver-align">
+      <div class="form">
+        <p class="primary">Add Product</p>
+        <form action="/products" method="POST">
+          <label for="productId">Product Code</label>
+          <input type="text" name="productId" required />
+          <label for="name">Product Name</label>
+          <input type="text" name="name" required />
+          <label for="price">Price</label>
+          <input type="number" name="price" required />
+          <label for="quantity">Stock Quantity</label>
+          <input type="number" name="quantity" required />
+          <label for="token">Password</label>
+          <input type="password" name="token" required />
+          <label for="description">Description</label>
+          <textarea rows="3" name="description"></textarea>
+          <input type="submit" value="Submit" id="submit" />
+        </form>
+      </div>
+      <div class="message">
+        <p>Already have the product? <a href="login.html">Edit Here</a></p>
+      </div>
+    </div>
+
+    <script src="scripts/script.js"></script>
+  </body>
+</html>

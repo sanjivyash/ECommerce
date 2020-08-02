@@ -1,12 +1,10 @@
+const path = require("path");
+
 const mongoose = require("mongoose");
 const express = require("express");
-const multer = require("multer");
-const sharp = require("sharp");
-const fileUpload = require('express-fileupload');
-const _ = require('lodash');
+const fileUpload = require("express-fileupload");
 
 const Product = require("../models/products");
-const upload = require("../middleware/upload");
 const auth = require("../middleware/auth");
 
 const router = express.Router();
@@ -26,10 +24,9 @@ router.get("/products", async (req, res) => {
 });
 
 // read a product
-router.get("/products/:productId", async (req, res) => {
-  // console.log(productId);
+router.get("/products/item", async (req, res) => {
   try {
-    const product = await Product.findByProductId(req.params.productId);
+    const product = await Product.findByProductId(req.form.productId);
     return res.send({ product });
   } catch (e) {
     res.status(400).send(e);
@@ -51,42 +48,65 @@ router.post("/products", auth, async (req, res) => {
 router.post(
   "/products/:productId",
   fileUpload({ createParentPath: true }),
-  async (req,res) => {
+  async (req, res) => {
     try {
-      if(!req.files) {
-        res.send({
-          status: false,
-          message: 'No file uploaded'
-        });
+      if (!req.files) {
+        throw new Error("No files uploaded");
       } else {
         let data = [];
-        req.files.photos.forEach((file) => {
-          let photo = file;
-          photo.mv('../uploads/' + photo.name);
+        req.files.photos = [].concat(req.files.photos);
+
+        const product = await Product.findByProductId(req.params.productId);
+        const routes = [];
+
+        const isValid = req.files.photos.every(
+          (photo) =>
+            ["png", "jpeg", "jpg"].indexOf(path.extname(photo.name)) !== -1
+        );
+
+        if (!isValid) {
+          throw new Error("Invalid file type uploaded");
+        }
+
+        req.files.photos.forEach(async (photo) => {
+          let route = path.join(
+            __dirname,
+            "..",
+            "..",
+            "..",
+            "uploads",
+            photo.name
+          );
+
+          routes.push(route);
+          await photo.mv(route);
+
           data.push({
             name: photo.name,
             mimetype: photo.mimetype,
-            size: photo.size
+            size: photo.size,
           });
         });
-        res.send({
-          status: true,
-          message: 'Files are uploaded',
-          data: data
-        });
+
+        product.images = product.images.concat(routes);
+        await product.save();
+
+        res.send({ data });
       }
-    } catch (err) {
-      res.status(500).send(err);
+    } catch (e) {
+      res.status(400).send({ error: e.message });
     }
   }
 );
 
 // edit a product
-router.patch("/products/:productId", auth, async (req, res) => {
+router.patch("/products/item", auth, async (req, res) => {
   try {
-    const product = await Product.findByProductId(req.params.productId);
+    const product = await Product.findByProductId(req.form.productId);
+    delete req.form.productId;
+
     const updates = Object.keys(req.form);
-    const fields = ["name", "description", "price"];
+    const fields = ["name", "description", "price", "images"];
     const isValid = updates.every((update) => fields.includes(update));
 
     if (isValid) {
@@ -102,9 +122,9 @@ router.patch("/products/:productId", auth, async (req, res) => {
 });
 
 // delete a product
-router.delete("/products/:productId", auth, async (req, res) => {
+router.delete("/products/item", auth, async (req, res) => {
   try {
-    const product = await Product.findByProductId(req.params.productId);
+    const product = await Product.findByProductId(req.form.productId);
     await product.remove();
     res.send({ product });
   } catch (e) {
