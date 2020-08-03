@@ -13,7 +13,7 @@ body {
 
 .ver-align {
   right: 50%;
-  bottom: 45%;
+  bottom: 50%;
   transform: translate(50%, 50%);
   position: absolute;
   width: 100%;
@@ -21,10 +21,12 @@ body {
 
 .form {
   margin: 0 auto;
+  margin-bottom: 1rem;
   max-width: min(25rem, 90%);
   padding: 5px 1rem;
   background-color: #fff;
   border-radius: 5px;
+  display: none;
 }
 
 .primary {
@@ -40,11 +42,11 @@ body {
   font-size: 0.9rem;
 }
 
-.form label {
+label {
   color: #666;
 }
 
-.form input,
+input,
 textarea {
   display: block;
   padding: 0.2rem 0.6rem;
@@ -57,55 +59,31 @@ textarea {
   font-size: 1rem;
 }
 
-#submit {
+.submit {
   padding: 3px 0;
   background-color: #49c1a2;
   border: none;
   color: #fff;
 }
 
-#submit:hover {
+.submit:hover {
   background-color: #37a08e;
 }
 
-.disclaimer {
-  font-size: 0.8rem;
-  text-align: center;
+select {
+  width: 100%;
+  padding: 0.2rem 0.6rem;
+  margin: 0.3rem 0.1rem;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  color: #333;
+  font-size: 1rem;
 }
 
-.disclaimer p {
-  line-height: 0.7rem;
-  margin: 0;
-  padding: 0;
-}
-
-.disclaimer p a {
-  color: #034bb4;
-  text-decoration: none;
-}
-
-.disclaimer p a:hover {
-  color: #034bb4;
-  text-decoration: underline;
-}
-
-.message {
-  text-align: center;
-  margin-top: 5px;
-}
-
-.message p {
-  color: #fff;
-  font-size: 0.8rem;
-  margin-top: 5px;
-}
-
-.message a {
-  color: #49c1a2;
-  text-decoration: none;
-}
-
-.message a:hover {
-  text-decoration: underline;
-  color: #37a08e;
+#select {
+  display: block;
+  margin: 1rem auto;
+  margin-top: 3rem;
 }

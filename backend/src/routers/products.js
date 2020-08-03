@@ -19,28 +19,28 @@ router.get("/products", async (req, res) => {
     );
     return res.send({ products });
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send({ error: e.message });
   }
 });
 
 // read a product
-router.get("/products/item", async (req, res) => {
+router.get("/product", async (req, res) => {
   try {
-    const product = await Product.findByProductId(req.form.productId);
+    const product = await Product.findByProductId(req.query.productId);
     return res.send({ product });
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send({ error: e.message });
   }
 });
 
 // create a product
-router.post("/products", auth, async (req, res) => {
+router.post("/product", auth, async (req, res) => {
   try {
     const product = new Product(req.form);
     await product.save();
     return res.status(201).send({ product });
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send({ error: e.message });
   }
 });
 
@@ -100,35 +100,39 @@ router.post(
 );
 
 // edit a product
-router.patch("/products/item", auth, async (req, res) => {
+router.post("/product/edit", auth, async (req, res) => {
   try {
     const product = await Product.findByProductId(req.form.productId);
     delete req.form.productId;
 
     const updates = Object.keys(req.form);
-    const fields = ["name", "description", "price", "images"];
+    const fields = ["name", "description", "price", "quantity", "images"];
     const isValid = updates.every((update) => fields.includes(update));
 
     if (isValid) {
-      updates.forEach((update) => (product[update] = req.form[update]));
+      updates.forEach((update) => {
+        if (req.form[update] !== "") {
+          product[update] = req.form[update];
+        }
+      });
       await product.save();
       res.send(product);
     } else {
       throw new Error("Invalid attributes targeted");
     }
   } catch (e) {
-    res.status(400).send({ error: e });
+    res.status(400).send({ error: e.message });
   }
 });
 
 // delete a product
-router.delete("/products/item", auth, async (req, res) => {
+router.post("/product/delete", auth, async (req, res) => {
   try {
     const product = await Product.findByProductId(req.form.productId);
     await product.remove();
     res.send({ product });
   } catch (e) {
-    res.status(400).send({ error: e });
+    res.status(400).send({ error: e.message });
   }
 });
 
