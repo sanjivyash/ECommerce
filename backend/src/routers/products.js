@@ -1,5 +1,5 @@
 const path = require("path");
-
+const AWS = require('aws-sdk');
 const mongoose = require("mongoose");
 const express = require("express");
 const fileUpload = require("express-fileupload");
@@ -45,6 +45,16 @@ router.post("/product", auth, async (req, res) => {
 });
 
 // images for a product
+
+const ID = process.env.ID;
+const SECRET = process.env.SECRET;
+
+const BUCKET_NAME = process.env.BUCKET_NAME;
+const s3 = new AWS.S3({
+    accessKeyId: ID,
+    secretAccessKey: SECRET,
+});
+
 router.post(
   "/products/:productId",
   fileUpload({ createParentPath: true }),
@@ -53,45 +63,47 @@ router.post(
       if (!req.files) {
         throw new Error("No files uploaded");
       } else {
-        let data = [];
+        let response = [];
         req.files.photos = [].concat(req.files.photos);
 
         const product = await Product.findByProductId(req.params.productId);
         const routes = [];
 
-        const isValid = req.files.photos.every(
-          (photo) =>
-            ["png", "jpeg", "jpg"].indexOf(path.extname(photo.name)) !== -1
-        );
-
-        if (!isValid) {
-          throw new Error("Invalid file type uploaded");
-        }
-
-        req.files.photos.forEach(async (photo) => {
-          let route = path.join(
-            __dirname,
-            "..",
-            "..",
-            "..",
-            "uploads",
-            photo.name
-          );
-
-          routes.push(route);
-          await photo.mv(route);
-
-          data.push({
-            name: photo.name,
-            mimetype: photo.mimetype,
-            size: photo.size,
-          });
+        const photos = req.files.photos;
+        uploadImagesAtOnce = photos.map(async (photo, index) => {
+          let params = {
+            Bucket: BUCKET_NAME,
+            Key: product.productId + `${index}`,
+            Body: photo.data,
+            ContentType: photo.mimetype,
+            ContentLength: photo.size,
+          };    
+          try{
+            const data = await s3.upload(params).promise();
+            console.log(`File Uploaded Successfully: ${data.Location}`);
+            routes.push(product.productId + `${index}`);
+            response.push({
+              name: photo.name,
+              mimetype: photo.mimetype,
+              size: photo.size,
+              location: data.Location,
+            });
+          } catch (err){
+            console.log(err, err.stack);
+          }
         });
 
-        product.images = product.images.concat(routes);
-        await product.save();
+        await Promise.all(uploadImagesAtOnce);
 
-        res.send({ data });
+        console.log(routes);
+        product.images = product.images.concat(routes);
+        try{
+          await product.save();
+        } catch(err){
+          console.log(err, err.stack);
+        }
+        console.log("Files Uploaded");
+        res.send({ response });
       }
     } catch (e) {
       res.status(400).send({ error: e.message });
@@ -128,9 +140,26 @@ router.post("/product/edit", auth, async (req, res) => {
 // delete a product
 router.post("/product/delete", auth, async (req, res) => {
   try {
-    const product = await Product.findByProductId(req.form.productId);
-    await product.remove();
+    const product = await Product.findByProductId(req.query.productId);
     res.send({ product });
+
+    const picture_paths = product.images;
+    removeImagesAtOnce = picture_paths.map(async (photoPath, index) => {
+      let params = {
+        Bucket: BUCKET_NAME,
+        Key: photoPath,
+      };    
+      try{
+        console.log(`File Deleted Successfully: ${photoPath}`);
+        const data = await s3.deleteObject(params).promise();
+      } catch (err){
+        console.log(err, err.stack);
+      }
+    });
+
+    await Promise.all(removeImagesAtOnce);
+
+    await product.remove();
   } catch (e) {
     res.status(400).send({ error: e.message });
   }
