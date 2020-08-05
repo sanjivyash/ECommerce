@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
+    <div class="ver-align">
+      <div class="form" id="select">
+        <select name="cars" id="cars">
+          <option selected="true" disabled="disabled">What do you want to do?</option>
+          <option value="create">Add Product</option>
+          <option value="edit">Edit Product</option>
+          <option value="delete">Delete Product</option>
+          <option value="read">Read Product</option>
+        </select>
+      </div>
+
+      <div class="form" id="create">
+        <p class="primary">Add Product</p>
+        <form action="/product" method="POST">
+          <label for="productId">Product Code</label>
+          <input type="text" name="productId" required />
+          <label for="name">Product Name</label>
+          <input type="text" name="name" required />
+          <label for="price">Price</label>
+          <input type="number" name="price" required />
+          <label for="quantity">Stock Quantity</label>
+          <input type="number" name="quantity" required />
+          <label for="token">Password</label>
+          <input type="password" name="token" required />
+          <label for="description">Description</label>
+          <textarea rows="3" name="description"></textarea>
+          <input type="submit" value="Submit" class="submit" />
+        </form>
+      </div>
+
+      <div class="form" id="edit">
+        <p class="primary">Edit Product</p>
+        <form action="/product/edit" method="POST">
+          <label for="productId">Product Code</label>
+          <input type="text" name="productId" required />
+          <label for="name">Product Name</label>
+          <input type="text" name="name" />
+          <label for="price">Price</label>
+          <input type="number" name="price" />
+          <label for="quantity">Stock Quantity</label>
+          <input type="number" name="quantity" />
+          <label for="token">Password</label>
+          <input type="password" name="token" required />
+          <label for="description">Description</label>
+          <textarea rows="3" name="description"></textarea>
+          <input type="submit" value="Submit" class="submit" />
+        </form>
+      </div>
+
+      <div class="form" id="delete">
+        <p class="primary">Delete Product</p>
+        <form action="/product/delete" method="POST">
+          <label for="productId">Product Code</label>
+          <input type="text" name="productId" required />
+          <label for="token">Password</label>
+          <input type="password" name="token" required />
+          <input type="submit" value="Submit" class="submit" />
+        </form>
+      </div>
+
+      <div class="form" id="read">
+        <p class="primary">Read Product</p>
+        <form action="/product" method="GET">
+          <label for="productId">Product Code</label>
+          <input type="text" name="productId" required />
+          <input type="submit" value="Submit" class="submit" />
+        </form>
+      </div>
+    </div>
+
+    <script src="scripts/script.js"></script>
+  </body>
+</html>

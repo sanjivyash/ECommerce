@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const auth = async (req, res, next) => {
   try {
     const form = req.body;
-    if (form.token === process.env.SECRET_TOKEN ) {
+    console.log(req.body);
+    if (form.token === process.env.SECRET_TOKEN) {
       delete form.token;
       req.form = form;
       next();

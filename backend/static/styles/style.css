@@ -1,0 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+* {
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  line-height: 1.5rem;
+  color: #444;
+}
+
+body {
+  background-color: #333745;
+}
+
+.ver-align {
+  right: 50%;
+  bottom: 50%;
+  transform: translate(50%, 50%);
+  position: absolute;
+  width: 100%;
+}
+
+.form {
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  max-width: min(25rem, 90%);
+  padding: 5px 1rem;
+  background-color: #fff;
+  border-radius: 5px;
+  display: none;
+}
+
+.primary {
+  font-weight: 800;
+  font-size: 2.5rem;
+  margin-top: 1.8rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.secondary {
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+label {
+  color: #666;
+}
+
+input,
+textarea {
+  display: block;
+  padding: 0.2rem 0.6rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  color: #333;
+  font-size: 1rem;
+}
+
+.submit {
+  padding: 3px 0;
+  background-color: #49c1a2;
+  border: none;
+  color: #fff;
+}
+
+.submit:hover {
+  background-color: #37a08e;
+}
+
+select {
+  width: 100%;
+  padding: 0.2rem 0.6rem;
+  margin: 0.3rem 0.1rem;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  color: #333;
+  font-size: 1rem;
+}
+
+#select {
+  display: block;
+  margin: 1rem auto;
+  margin-top: 3rem;
+}
