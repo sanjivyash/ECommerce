@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../App.css";
+import CartModal from "./CartModal.component";
 
 function NavBarCustom() {
   return (
@@ -32,19 +33,20 @@ function NavBarCustom() {
 
                 <ul className="nav-shop">
                   <li className="nav-item">
-                    <button><i className="ti-search"></i></button>
+                    <button type="button" className="btn btn-primary"><i className="ti-search"></i></button>
                   </li>
                   <li className="nav-item">
-                    <button><i className="ti-shopping-cart"></i></button>
+                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#cartModal"><i className="ti-shopping-cart"></i></button>
                   </li>
                   <li className="nav-item">
-                    <button><Link className="button button-header" to="/">Buy Now</Link></button>
+                    <button><Link className="button button-header" to="/" style={{textDecoration: "none"}}>Buy Now</Link></button>
                   </li>
                 </ul>
               </div>
             </div>
           </nav>
         </div>
+        <CartModal />
       </header>
   );
 }

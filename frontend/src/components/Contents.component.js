@@ -5,13 +5,20 @@ import Products from './Products.component.js';
 import About from './about.component.js';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
+function NotFound(props) {
+    return (
+        <h1>Page Not Found</h1>
+    );
+}
+
 function Contents() {
     return (
         <Switch>
-            <Redirect exact from="/" to="/main" />
-            <Route path="/main" component={LandingPage} />
-            <Route path="/products" component={Products} />
-            <Route path="/about" component={About} />
+            <Redirect exact from="/" to="/products" />
+            <Route exact path="/main" component={LandingPage} />
+            <Route exact path="/products" component={Products} />
+            <Route exact path="/about" component={About} />
+            <Route path="/" component={NotFound} />
         </Switch>
     );
 }
