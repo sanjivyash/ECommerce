@@ -12,14 +12,28 @@ const initialState = {
 function reducer(state, action) {
   switch(action.type) {
     case "increase":
-      const newCartitem = action.payload;
-      const newProducts = [...state.cartItems, newCartitem];
-      const newNumberItems = state.numberItems + 1;
+      let newCartitem = action.payload;
+      for(let i=0;i<state.cartItems.length;i++){
+        if(state.cartItems[i].productId===newCartitem.productId){
+          state.cartItems[i].quantity += 1;
+          return state;
+        }
+      }
+      newCartitem.quantity=1;
+      let newProducts = [...state.cartItems, newCartitem];
+      let newNumberItems = state.numberItems + 1;
       return {cartItems: newProducts, numberItems: newNumberItems};
     case "decrease":
-      const newCartProducts = state.cartItems.filter(product => product.productId !== action.payload.productId);
-      const newCartNumberItems = state.numberItems - 1;
+      let newCartProducts = state.cartItems.filter(product => product.productId !== action.payload.productId);
+      let newCartNumberItems = state.numberItems - 1;
       return {cartItems: newCartProducts, numberItems: newCartNumberItems};
+    case "quantity":
+      for(let i=0;i<state.cartItems.length;i++){
+        if(state.cartItems[i].productId===action.payload.productId){
+          state.cartItems[i].quantity = action.payload.quantity;
+        }
+        return state;
+      }
     case "reset":
       return initialState;
     default:

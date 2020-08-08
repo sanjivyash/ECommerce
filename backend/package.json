@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/index",
     "dev": "env-cmd -f config/dev.env nodemon src/index -e js,css,html",
-    "test": "env-cmd -f config/test.env jest --watch"
+    "test": "env-cmd -f config/test.env jest --watch",
+    "initialize": "mongo mongodb+srv://Yash-31:3NNILT6nkaPGWf8b@cluster0.wnann.mongodb.net/ecommerceApi?retryWrites=true&w=majority ./scripts/init.mongo.js"
   },
   "dependencies": {
     "aws-sdk": "^2.726.0",

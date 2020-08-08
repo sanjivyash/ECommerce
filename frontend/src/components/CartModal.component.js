@@ -7,18 +7,32 @@ function CartModal(props) {
     let content = null;
     if(state){
         content = state.cartItems.map((product) => {
-            return (<div key={product.productId} className="col-12">
-                <div className="card text-center card-product">
-                    <div className="card-product__img">
-                        <img className="card-img" src="../../public/Gravator-icon.png" alt="" />
-                        <div className="card-body">
-                            <p>{product.productId}</p>
-                            <h5 className="card-product__title">{product.name}</h5>
-                            <p className="card-product__price">{product.price}</p>
+            return (
+                <div key={product.productId} className="col-12">
+                    <div className="media">
+                        <img src={product.thumbnail} className="mr-3" style={{ width: "120px", height: "80px", display: "block" }} alt=""/>
+                        <div className="media-body">
+                            <h5 className="mt-0">{product.name}</h5>
+                            <h6 className="mt-0">{product.price}</h6>
+                            {/* Quantity logic to be added here */}
+                            <h6 className="mt-0">Quantity: </h6>
+                            <button className="btn btn-sm btn-primary" onClick={() => {
+                                dispatch({type: "quantity", payload: { productId: product.productId, quantity: product.quantity-1 }})
+                            }}><i className="ti-minus"></i></button>
+                            {'   '}
+                            {product.quantity}
+                            {'   '}
+                            <button className="btn btn-sm btn-primary" onClick={() => {
+                                dispatch({type: "quantity", payload: { productId: product.productId, quantity: product.quantity+1 }})
+                            }}><i className="ti-plus"></i></button>
+                            {'   '}
+                            <button className=" btn btn-sm btn-danger" onClick={() => {
+                                dispatch({type: "decrease", payload: product});
+                            }}><i className="ti-trash"></i></button> 
                         </div>
                     </div>
                 </div>
-            </div>);
+            );
         })
     }
 
@@ -47,7 +61,7 @@ function CartModal(props) {
                         <button type="button" className="btn btn-primary ml-auto" onClick={() => {
                             console.log(state);
                             console.log(process.env.REACT_APP_BACKEND_HOST);
-                        }}>Buy</button>
+                        }}>Checkout</button>
                     </div>
                 </div>
             </div>

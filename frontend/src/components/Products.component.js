@@ -34,14 +34,8 @@ function Products() {
   useEffect(() => {
       const result = axios.get(`/products?page=${serverPage}&limit=40`).then((res) => {
           console.log(res.data.products.docs);
-          res.data.products.docs.forEach(async (element) => {
-            const data = await s3.getObject({
-              Bucket: BucketName || 'p5enterprizes2020',
-              Key: element.images[0],
-            }).promise();
-            let buf = await Buffer.from(data.Body);
-            let base64 = await buf.toString('base64');
-            element.images[0]="data:/image/jpeg;base64," + base64;
+          res.data.products.docs.forEach((product) => {
+            product.thumbnail="data:/image/jpeg;base64," + product.thumbnail;
           });
           setData(res.data.products.docs);
           setIsLoading(false);
@@ -57,11 +51,10 @@ function Products() {
       <div  key={product.productId} className="col-md-6 col-lg-4 col-xl-3">
         <div className="card text-center card-product">
           <div className="card-product__img">
-            <img className="card-img" src={product.images[0]} alt="" />
+            <img className="card-img" src={product.thumbnail} alt="" />
             <ul className="card-product__imgOverlay">
               <li><button><i className="ti-search"></i></button></li>
               <li><button onClick={() => {
-                console.log(product.images[0]);
                 dispatch({ type: "increase", payload: product });
               }}><i className="ti-shopping-cart"></i></button></li>
             </ul>

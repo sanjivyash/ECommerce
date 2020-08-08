@@ -30,6 +30,9 @@ const ProductSchema = new mongoose.Schema({
   images: {
     type: [String],
   },
+  thumbnail: {
+    type: String,
+  }
 });
 
 // enable pagination

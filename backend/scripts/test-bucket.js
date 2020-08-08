@@ -16,7 +16,7 @@ const uploadFile = async (filename) => {
 
     const params = {
         Bucket: BUCKET_NAME,
-        Key: "test_img.jpg",
+        Key: "test_img",
         Body: fileContent,
     };
 

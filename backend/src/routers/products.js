@@ -3,6 +3,7 @@ const AWS = require('aws-sdk');
 const mongoose = require("mongoose");
 const express = require("express");
 const fileUpload = require("express-fileupload");
+const sharp = require('sharp');
 
 const Product = require("../models/products");
 const auth = require("../middleware/auth");
@@ -83,6 +84,16 @@ router.post(
             const data = await s3.upload(params).promise();
             console.log(`File Uploaded Successfully: ${data.Location}`);
             routes.push(product.productId + `${index}`);
+            if(index==0){
+              try{
+                const buf = Buffer.from(photo.data);
+                const base = await sharp(buf).jpeg().resize(600,400).toBuffer();                
+                const base64 = base.toString('base64');
+                thumbnailString = base64;
+              } catch(err){
+                console.log(err);
+              }
+            }
             response.push({
               name: photo.name,
               mimetype: photo.mimetype,
@@ -98,6 +109,7 @@ router.post(
 
         console.log(routes);
         product.images = product.images.concat(routes);
+        product.thumbnail = thumbnailString;
         try{
           await product.save();
         } catch(err){
