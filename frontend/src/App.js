@@ -5,7 +5,7 @@ import NavBarCustom from "./components/NavBar.component.js";
 import Footer from "./components/Footer.component.js";
 
 const initialState = {
-  cartItems: {},
+  cartItems: [],
   numberItems: 0,
 }
 

@@ -68,6 +68,7 @@ router.post(
 
         const product = await Product.findByProductId(req.params.productId);
         const routes = [];
+        let thumbnailString = '';
 
         const photos = req.files.photos;
         uploadImagesAtOnce = photos.map(async (photo, index) => {

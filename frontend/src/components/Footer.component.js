@@ -20,9 +20,9 @@ function Footer() {
 							<div className="single-footer-widget tp_widgets">
 								<h4 className="footer_title">Quick Links</h4>
 								<ul className="list">
-									<li><a href="#">Home</a></li>
-									<li><a href="#">Shop</a></li>
-									<li><a href="#">Contact</a></li>
+									<li><Link to="#">Home</Link></li>
+									<li><Link to="#">Shop</Link></li>
+									<li><Link to="#">Contact</Link></li>
 								</ul>
 							</div>
 						</div>
