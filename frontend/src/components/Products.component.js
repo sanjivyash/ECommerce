@@ -32,7 +32,7 @@ function Products(props) {
   // function getImage()
 
   useEffect(() => {
-      const result = axios.get(`/products?page=${serverPage}&limit=40`).then((res) => {
+      const result = axios.get(`http://localhost:5000/products?page=${serverPage}&limit=40`).then((res) => {
           console.log(res.data);
           res.data.products.docs.forEach((product) => {
             product.thumbnail="data:/image/jpeg;base64," + product.thumbnail;

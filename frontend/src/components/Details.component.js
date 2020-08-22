@@ -22,10 +22,13 @@ export default function DetailsComponent(props){
     let imageBlocks = [];
 
     useEffect(() => {
-        console.log(productId);
-        const result = axios.get(`/product?productId=${productId}`).then(async (res) => {
-            console.log(res.data.product);
-            const images = res.data.product.images;
+        async function imageManip(){
+            imageBlocks = [];
+
+            console.log(productId);
+            const result = await axios.get(`http://localhost:5000/product?productId=${productId}`);
+            console.log(result.data);
+            const images = result.data.product.images;
             const getImages = images.map(async (image, index) => {
                 let params = {
                     Bucket: BucketName,
@@ -35,29 +38,19 @@ export default function DetailsComponent(props){
                     const data = await s3.getObject(params).promise();
                     const buf = await Buffer.from(data.Body);
                     const base64 = buf.toString('base64');
-                    res.data.product.images[index] = base64;
+                    imageBlocks.push(<div key={index} className="single-prd-item">
+                        <img className="img-fluid" alt="" src={`data:/image/jpeg;base64,` + base64} />
+                    </div>);
                 } catch(err){
                     console.log(err);
                 }
             });
             await Promise.all(getImages);
-            SetProduct(res.data.product);
+            SetProduct(result.data.product);
             setIsLoading(false);
-        });
-
-    }, [ productId ]);
-
-    useEffect(() => {
-        if(product.images){
-            imageBlocks = product.images.map((image) => {
-                return (
-                    <div key={product.productId}  className="single-prd-item">
-                        <img className="img-fluid" alt="" src={`data:/image/jpeg;base64,` + image} />
-                    </div>
-                );
-            });
         }
-    }, [ ])
+        imageManip();
+    }, [ ]);
 
     return (
         <div className="product_image_area">

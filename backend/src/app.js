@@ -1,4 +1,5 @@
 const path = require("path");
+const cors = require('cors');
 
 const express = require("express");
 require("./db/mongoose");
@@ -9,6 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 const TEMPLATES_DIR = path.join(__dirname, "..", "templates");
 const STATIC_DIR = path.join(__dirname, "..", "static");
 
+app.use(cors());
 app.use(express.static(STATIC_DIR));
 app.use(require("./routers/products"));
 
