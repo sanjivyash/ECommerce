@@ -6,7 +6,7 @@ import Paginator from "./Paginator.js";
 import { CartContext } from "../App.js";
 import { S3 } from 'aws-sdk';
 
-function Products() {
+function Products(props) {
   
   const Id = process.env.REACT_APP_ID || 'AKIAITWLM2HH3ZTL7NWQ';
   const secret = process.env.REACT_APP_SECRET || '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';
@@ -33,12 +33,14 @@ function Products() {
 
   useEffect(() => {
       const result = axios.get(`/products?page=${serverPage}&limit=40`).then((res) => {
-          console.log(res.data.products.docs);
+          console.log(res.data);
           res.data.products.docs.forEach((product) => {
             product.thumbnail="data:/image/jpeg;base64," + product.thumbnail;
           });
           setData(res.data.products.docs);
           setIsLoading(false);
+        }).catch(err => {
+          console.log(err);
         }) 
   }, [ serverPage]);
 
@@ -53,7 +55,9 @@ function Products() {
           <div className="card-product__img">
             <img className="card-img" src={product.thumbnail} alt="" />
             <ul className="card-product__imgOverlay">
-              <li><button><i className="ti-search"></i></button></li>
+              <li><button onClick={() => {
+                props.history.push(`/details/${product.productId}`);
+              }}><i className="ti-search"></i></button></li>
               <li><button onClick={() => {
                 dispatch({ type: "increase", payload: product });
               }}><i className="ti-shopping-cart"></i></button></li>
