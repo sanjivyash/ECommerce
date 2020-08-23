@@ -75,7 +75,7 @@ function CartModal(props) {
     <div
       className="modal fade"
       id="cartModal"
-      tabindex="-1"
+      tabIndex="-1"
       role="dialog"
       aria-labelledby="cartModalLabel"
       aria-hidden="true"

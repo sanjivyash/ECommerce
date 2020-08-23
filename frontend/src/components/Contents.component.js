@@ -18,7 +18,7 @@ function Contents() {
             <Redirect exact from="/" to="/products" />
             <Route exact path="/main" component={LandingPage} />
             <Route exact path="/products" component={Products} />
-            <Route path="/details/:productId" component={DetailsComponent} />
+            <Route path="/details" component={DetailsComponent} />
             <Route exact path="/about" component={About} />
             <Route path="/" component={NotFound} />
         </Switch>
