@@ -55,12 +55,15 @@ function Products(props) {
           <div className="card-product__img">
             <img className="card-img" src={product.thumbnail} alt="" />
             <ul className="card-product__imgOverlay">
+              
               <li><button onClick={() => {
                 props.history.push(`/details/${product.productId}`);
               }}><i className="ti-search"></i></button></li>
+
               <li><button onClick={() => {
                 dispatch({ type: "increase", payload: product });
               }}><i className="ti-shopping-cart"></i></button></li>
+
             </ul>
           </div>
           <div className="card-body">
