@@ -62,6 +62,8 @@ export default function DetailsComponent(props) {
         console.log("Resolved");
         console.log(imageBlocks);
         await setImagesB(imageBlocks);
+        res.data.product.thumbnail =
+          "data:/image/jpeg;base64," + res.data.product.thumbnail;
         await SetProduct(res.data.product);
       } catch (err) {
         console.log(err);
@@ -125,13 +127,7 @@ export default function DetailsComponent(props) {
                 onClick={() => {
                   dispatch({
                     type: "increase",
-                    payload: {
-                      productId: product.productId,
-                      price: product.price,
-                      description: product.description,
-                      name: product.name,
-                      quantity: product.quantity,
-                    },
+                    payload: { ...product },
                   });
                 }}
               >
