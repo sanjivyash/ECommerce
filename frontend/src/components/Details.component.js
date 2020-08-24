@@ -5,6 +5,7 @@ import axios from 'axios';
 import { S3, WAFRegional } from 'aws-sdk';
 import { CartContext } from '../App';
 
+
 export default function DetailsComponent(props){
 
     const {state, dispatch} = useContext(CartContext);
@@ -41,7 +42,9 @@ export default function DetailsComponent(props){
                     const buf = await Buffer.from(data.Body);
                     const base64 = buf.toString('base64');
                     return(<div key={image} className="single-prd-item">
-                        <img className="img-fluid" alt="" src={`data:/image/jpeg;base64,` + base64} />
+                        <div style={{overflow: "hidden"}}>
+                            <img className="img-fluid" alt="" src={`data:/image/jpeg;base64,` + base64} />
+                        </div>
                     </div>)
                 } catch(err){
                     console.log(err);

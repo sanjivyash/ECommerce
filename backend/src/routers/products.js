@@ -87,7 +87,7 @@ router.post(
             if(index==0){
               try{
                 const buf = Buffer.from(photo.data);
-                const base = await sharp(buf).jpeg().resize(600,400).toBuffer();                
+                const base = await sharp(buf).jpeg().resize(400,700).toBuffer();                
                 const base64 = base.toString('base64');
                 thumbnailString = base64;
               } catch(err){
