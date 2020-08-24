@@ -8,9 +8,14 @@ import { S3 } from 'aws-sdk';
 
 function Products(props) {
   
-  const Id = process.env.REACT_APP_ID || 'AKIAITWLM2HH3ZTL7NWQ';
-  const secret = process.env.REACT_APP_SECRET || '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';
-  const BucketName = process.env.REACT_APP_BUCKET_NAME || 'p5enterprizes2020';
+  // const Id = process.env.REACT_APP_ID || 'AKIAITWLM2HH3ZTL7NWQ';
+  // const secret = process.env.REACT_APP_SECRET || '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';
+  // const BucketName = process.env.REACT_APP_BUCKET_NAME || 'p5enterprizes2020';
+
+  const Id = process.env.REACT_APP_ID ;
+  const secret = process.env.REACT_APP_SECRET ;
+  const BucketName = process.env.REACT_APP_BUCKET_NAME ;
+
 
   const s3 = new S3({
     accessKeyId: Id,
@@ -32,7 +37,7 @@ function Products(props) {
   // function getImage()
 
   useEffect(() => {
-      const result = axios.get(`http://localhost:5000/products?page=${serverPage}&limit=40`).then((res) => {
+      const result = axios.get(`${process.env.REACT_APP_BACKEND_HOST}/products?page=${serverPage}&limit=40`).then((res) => {
           console.log(res.data);
           res.data.products.docs.forEach((product) => {
             product.thumbnail="data:/image/jpeg;base64," + product.thumbnail;
@@ -55,12 +60,20 @@ function Products(props) {
           <div className="card-product__img">
             <img className="card-img" src={product.thumbnail} alt="" />
             <ul className="card-product__imgOverlay">
+              
               <li><button onClick={() => {
-                props.history.push(`/details/${product.productId}`);
+                const location = {
+                  pathname: '/details',
+                  search: `?productId=${product.productId}`
+                };
+                console.log(product.productId);
+                props.history.push(location);
               }}><i className="ti-search"></i></button></li>
+
               <li><button onClick={() => {
                 dispatch({ type: "increase", payload: product });
               }}><i className="ti-shopping-cart"></i></button></li>
+
             </ul>
           </div>
           <div className="card-body">
