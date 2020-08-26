@@ -27,19 +27,13 @@ function NavBarCustom() {
                     <Link className="nav-link" to="/products" >Shop</Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/main">Contact</Link>
+                    <Link className="nav-link" to="/contact">Contact</Link>
                   </li>
                 </ul>
 
                 <ul className="nav-shop">
                   <li className="nav-item">
-                    <button type="button" className="btn btn-primary"><i className="ti-search"></i></button>
-                  </li>
-                  <li className="nav-item">
-                    <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#cartModal"><i className="ti-shopping-cart"></i></button>
-                  </li>
-                  <li className="nav-item">
-                    <button><Link className="button button-header" to="/" style={{textDecoration: "none"}}>Buy Now</Link></button>
+                    <button type="button" data-toggle="modal" data-target="#cartModal"><Link className="button button-header" style={{textDecoration: "none"}}><i className="ti-shopping-cart"></i> Your Cart</Link></button>
                   </li>
                 </ul>
               </div>
