@@ -33,7 +33,7 @@ export default function DetailsComponent(props) {
 
     async function getProduct() {
       const res = await axios.get(
-        `http://localhost:5000/product?productId=${searchParams.get(
+        `${process.env.REACT_APP_BACKEND_HOST}/product?productId=${searchParams.get(
           "productId"
         )}`
       );
