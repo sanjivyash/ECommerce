@@ -6,7 +6,8 @@
   "author": "sanjivyash <sanjiv.yash@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "concurrently 'bash backend.sh' 'bash frontend.sh'"
+    "dev": "concurrently 'bash backend.sh' 'bash frontend.sh'",
+    "start": "concurrently 'pm2 start backend.sh' 'pm2 start prodFrontend.sh"
   },
   "dependencies": {
     "concurrently": "^5.3.0"
