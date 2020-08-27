@@ -90,8 +90,8 @@ export default function DetailsComponent(props) {
               style={{ display: "block", overflow: "hidden" }}
               className="owl-carousel owl-theme s_Product_carousel"
             >
-              {imagesB.map((base64) => (
-                <div key={Date.now()} className="single-prd-item">
+              {imagesB.map((base64, index) => (
+                <div key={index} className="single-prd-item">
                   <img
                     className="img-fluid"
                     alt=""
