@@ -153,7 +153,7 @@ router.post("/product/edit", auth, async (req, res) => {
 // delete a product
 router.post("/product/delete", auth, async (req, res) => {
   try {
-    const product = await Product.findByProductId(req.query.productId);
+    const product = await Product.findByProductId(req.form.productId);
     res.send({ product });
 
     const picture_paths = product.images;
