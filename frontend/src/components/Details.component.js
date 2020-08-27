@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useRouteMatch, useLocation } from "react-router-dom";
 import { ReactLoading } from "react-loading";
+import OwlCarousel from 'react-owl-carousel';  
 import axios from "axios";
 import { S3, WAFRegional } from "aws-sdk";
 import { CartContext } from "../App";
 
 export default function DetailsComponent(props) {
+
+  const OwlRef = useRef('gallery');
   const { state, dispatch } = useContext(CartContext);
   const Id = process.env.REACT_APP_ID;
   const secret = process.env.REACT_APP_SECRET;
@@ -80,20 +83,38 @@ export default function DetailsComponent(props) {
     setUseless((useless) => useless + 1);
   }, [loaded, length]);
 
+  const OwlOptions = {
+    items: 1,
+    nav: true,
+    navText:["<div className='nav-btn prev-slide'></div>","<div className='nav-btn next-slide'></div>"],
+    rewind: true,
+    autoplay: true,
+    slideBy: 1,
+    dots: true,
+    dotsEach: true,
+    dotData: true
+  };
+
   return (
     <div className="product_image_area">
       <div className="container">
         {!loaded && <div>Please Wait...</div>}
         <div className="row s_product_inner">
           <div className="col-lg-6">
-            <div
-              style={{ display: "block", overflow: "hidden" }}
-              className="owl-carousel owl-theme s_Product_carousel"
-            >
-              {imagesB.map((base64, index) => (
-                <div key={index} className="single-prd-item">
+            <OwlCarousel ref={OwlRef} 
+              items={1}
+              nav={true}
+              navText={["<div className='nav-btn prev-slide'></div>","<div className='nav-btn next-slide'></div>"]}
+              rewind={true}
+              autoplay={true}
+              slideBy={1}
+              dots={true}
+              dotsEach={true}
+              dotData={true}  >  
+                {imagesB.map((base64, index) => (
+                <div key={index}>
                   <img
-                    className="img-fluid"
+                    className="img"
                     alt=""
                     src={`data:/image/jpeg;base64,${base64}`}
                     onLoad={handleLoading}
@@ -101,8 +122,8 @@ export default function DetailsComponent(props) {
                   />
                 </div>
               ))}
+            </OwlCarousel>
             </div>
-          </div>
           <div className="col-lg-5 offset-lg-1">
             <div className="s_product_text">
               <h3>{product.name}</h3>
@@ -123,14 +144,13 @@ export default function DetailsComponent(props) {
               <p>{product.description}</p>
               <a
                 style={{ textDecoration: "none" }}
-                className="button primary-btn"
+                className="button button-header"
                 onClick={() => {
                   dispatch({
                     type: "increase",
                     payload: { ...product },
                   });
-                }}
-              >
+                }}>
                 Add to Cart
               </a>
             </div>
