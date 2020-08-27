@@ -4,7 +4,7 @@ import '../App.css';
 
 function Footer() {
     return (
-		<footer id="footer_main" className="page-footer font-small bg-primary pt-4">
+		<footer id="footer_main" className="page-footer font-small bg-primary pt-4 mt-2">
 			<div className="footer-area">
 				<div className="container">
 					<div className="row section_gap">
