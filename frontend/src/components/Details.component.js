@@ -143,8 +143,8 @@ export default function DetailsComponent(props) {
               </ul>
               <p>{product.description}</p>
               <a
-                style={{ textDecoration: "none" }}
-                className="button button-header"
+                style={{ textDecoration: "none", cursor: "pointer" }}
+                className="button primary-outline"
                 onClick={() => {
                   dispatch({
                     type: "increase",
