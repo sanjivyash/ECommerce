@@ -73,9 +73,10 @@ router.post(
 
         const photos = req.files.photos;
         uploadImagesAtOnce = photos.map(async (photo, index) => {
-          let params = {
+         const route = product.productId + `${index}` + Date.now() 
+	 let params = {
             Bucket: BUCKET_NAME,
-            Key: product.productId + `${index}${Date.now()}`,
+            Key: route,
             Body: photo.data,
             ContentType: photo.mimetype,
             ContentLength: photo.size,
@@ -83,7 +84,7 @@ router.post(
           try{
             const data = await s3.upload(params).promise();
             console.log(`File Uploaded Successfully: ${data.Location}`);
-            routes.push(product.productId + `${index}${Date.now()}`);
+            routes.push(route);
             if(index==0){
               try{
                 const buf = Buffer.from(photo.data);
